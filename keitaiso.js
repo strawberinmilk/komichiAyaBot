@@ -18,7 +18,7 @@ function keitaiso(allWord) {
     splitWord.push(" ");
     console.log(splitWord);
     let date = new Date();
-    fs.writeFileSync(`./keitaiso-${date.getTime()}.txt`, splitWord);
+    fs.writeFileSync(`./data/keitaiso-${date.getTime()}.txt`, splitWord);
   });
 };
 

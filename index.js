@@ -3,7 +3,7 @@ const fs = require("fs");
 let keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8");
 keitaiso = keitaiso.split(",");
 
-function ayayasBrain(){
+function ayayaSay(){
 let ayaya = [];
 let serchWord = " ";
 while (1 === 1) {
@@ -26,10 +26,40 @@ while (1 === 1) {
     }
 }
 ayaya = ayaya.join("");
-console.log(ayaya);
 return ayaya
 }
 
-for(i=0;i<10;i++){
-    ayayasBrain()
-}
+const twitter = require("twitter");
+const cron = require('cron').CronJob;
+require('dotenv').config();
+key = new twitter({
+    consumer_key: process.env.consumer_key,
+    consumer_secret: process.env.consumer_secret,
+    access_token_key: process.env.access_token_key,
+    access_token_secret: process.env.access_token_secret
+});
+key.get("account/verify_credentials", function (error, data) {
+	mydata = JSON.stringify(data)
+	mydata = JSON.parse(mydata)
+	//console.log(mydata)
+
+	console.log("認証アカウント")
+	console.log("@" + mydata.screen_name)
+	console.log(mydata.name)
+	console.log("\n")
+
+})
+
+let cronAyaya = new cron({
+	cronTime: '0 0,10,20,30,40,50 * * * *',
+	onTick: function () {
+		let postData = ayayaSay()
+		key.post('statuses/update',
+			{ status: postData },
+			function (error, tweet, response) {
+			})
+	},
+	start: false, 
+	timeZone: 'Asia/Tokyo'
+});
+cronAyaya.start();
