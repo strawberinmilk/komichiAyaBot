@@ -26,6 +26,10 @@ function ayayaSay() {
         }
     }
     ayaya = ayaya.join("");
+    let last2 = ayaya[ayaya.length-2] + ayaya[ayaya.length-1]
+    if(last2==="しね"){
+        ayaya = ayayaSay()
+    }
     return ayaya
 }
 
