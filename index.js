@@ -3,7 +3,7 @@ const fs = require("fs");
 let keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8");
 keitaiso = keitaiso.split(",");
 
-function ayayaSay() {
+function ayayaSay(){
     let ayaya = [];
     let serchWord = " ";
     while (1 === 1) {
@@ -26,12 +26,30 @@ function ayayaSay() {
         }
     }
     ayaya = ayaya.join("");
-    let last2 = ayaya[ayaya.length-2] + ayaya[ayaya.length-1]
-    if(last2==="しね"){
-        ayaya = ayayaSay()
-    }
-    return ayaya
+    return ayaya;
 }
+
+function call (){
+    while(1===1){
+        let ayaya = ayayaSay();
+        let split = ayaya[ayaya.length-2] + ayaya[ayaya.length-1];
+        if(split!="しね" && ayaya.length>25){
+            return ayaya;
+            break;
+        }
+    }
+}
+
+//テストコード twitterを殺してから実行すること
+/*
+let num = 0;
+for(let i=0;i<1000;i++){
+    let tmp = call();
+    num += tmp.length
+    console.log(`${tmp}${i}`)
+}
+console.log(num/1000);
+*/
 
 const twitter = require("twitter");
 const cron = require('cron').CronJob;

@@ -14,10 +14,18 @@ keitaiso.jsで./dataの中にkeitaiso-(timestamp).txtを生成し、それをind
 
 2 `$ npm install`します  
 
-3 なにかファイルを生成し、keitaiso.jsの一番下の行を書き換え`$ node keitaiso.js`します  
+3 文字列を書き込んだファイル(改行区切りで別の文と認識します)を配置し、keitaiso.jsの一番下の行を書き換え`$ node keitaiso.js`します  
 
-4 競合を防ぐためにtimestampをつけたファイルが生成されるので、適切にkeitaiso.txtというファイルにします  
+4 3により競合を防ぐためにtimestampをつけたファイルが生成されるので、適切にkeitaiso.txtというファイルにします  
 
-5 ./.envを適切に設定します  
+5 ./.envにtwitterAPIkeyを適切に設定します  
 
 6 `$ node index.js`すると10分ごとにツイートされます　 
+
+更新履歴
+
+2018.03.23  ｖ1.0.0  初回commit
+
+2018.03.24  ｖ1.0.1  "しね"と発言する問題を解決
+
+2018.04.11  ｖ1.0.2  短文投稿する問題を解決
