@@ -3,7 +3,7 @@ const fs = require("fs");
 let keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8");
 keitaiso = keitaiso.split(",");
 
-function ayayaSay(){
+function ayayaSay() {
     let ayaya = [];
     let serchWord = " ";
     while (1 === 1) {
@@ -29,11 +29,10 @@ function ayayaSay(){
     return ayaya;
 }
 
-function call (){
-    while(1===1){
+function call() {
+    while (1 === 1) {
         let ayaya = ayayaSay();
-        let split = ayaya[ayaya.length-2] + ayaya[ayaya.length-1];
-        if(split!="しね" && ayaya.length>25){
+        if ( !ayaya.match(/しね$/) && ayaya.length > 25) {
             return ayaya;
             break;
         }
@@ -82,7 +81,7 @@ key.stream('user', function (stream) {
 let cronAyaya = new cron({
     cronTime: '0 0,10,20,30,40,50 * * * *',
     onTick: function () {
-        let postData = ayayaSay()
+        let postData = call()
         key.post('statuses/update',
             { status: postData },
             function (error, tweet, response) {
