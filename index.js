@@ -12,20 +12,26 @@ const ayayaSay = () =>{
             indexofStart += 1;
             indexofStart = keitaiso.indexOf(serchWord, indexofStart);
             if (indexofStart === -1 || indexofStart === keitaiso.length - 1) {
+                indexofStart = null;
                 break;
             };
             wordNumberList.push(indexofStart + 1);
         };
         let wordNumber = wordNumberList[Math.floor(Math.random() * wordNumberList.length)];
+        indexofStart = null;
+        wordNumberList = null;
         if (keitaiso[wordNumber] === " ") {
             break;
         } else {
             serchWord = keitaiso[wordNumber];
             ayaya.push(keitaiso[wordNumber]);
         }
+        wordNumber = null
     }
+    serchWord = null;
     ayaya = ayaya.join("");
     return ayaya;
+    ayaya = null;
 }
 
 const call = () => {
@@ -33,9 +39,10 @@ const call = () => {
         let ayaya = ayayaSay();
         if ( !ayaya.match(/しね$/) && ayaya.length > 25) {
             return ayaya;
+            ayaya = null;
             break;
         }else{
-            ayaya = null
+            ayaya = null;
             continue;
         }
     }
@@ -55,7 +62,6 @@ console.log(num/1000);
 const twitter = require("twitter");
 const cron = require('cron').CronJob;
 require('dotenv').config();
-console.log(process.env.consumer_key)
 const key = new twitter({
     consumer_key: process.env.consumer_key,
     consumer_secret: process.env.consumer_secret,
@@ -71,6 +77,7 @@ key.get("account/verify_credentials", function (error, data) {
     console.log("@" + mydata.screen_name)
     console.log(mydata.name)
     console.log("\n")
+    mydata = null;
 })
 
 key.stream('user', stream => {
