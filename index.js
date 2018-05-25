@@ -55,9 +55,14 @@ for(let i=0;i<1000;i++){
     let tmp = call();
     num += tmp.length
     console.log(`${tmp}${i}`)
+    console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
 console.log(num/1000);
 */
+
+setInterval(()=>{
+  console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
+},600000)
 
 const twitter = require("twitter");
 const cron = require('cron').CronJob;

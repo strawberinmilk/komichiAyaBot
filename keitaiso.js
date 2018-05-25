@@ -4,7 +4,6 @@ const builder = kuromoji.builder({
 });
 const fs = require("fs");
 
-// 形態素解析機を作るメソッド
 function keitaiso(allWord) {
   let splitWord = [" "];
   allWord = allWord.split("\n");
