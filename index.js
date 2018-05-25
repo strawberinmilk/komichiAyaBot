@@ -62,7 +62,7 @@ console.log(num/1000);
 
 setInterval(()=>{
   console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
-},600000)
+},10000)
 
 const twitter = require("twitter");
 const cron = require('cron').CronJob;
