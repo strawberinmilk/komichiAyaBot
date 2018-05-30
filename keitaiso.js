@@ -4,7 +4,14 @@ const builder = kuromoji.builder({
 });
 const fs = require("fs");
 
-function keitaiso(allWord) {
+function keitaiso() {
+  let allWord = ""
+  let filelist = fs.readdirSync("./data/original")
+  for(let i=0;i<filelist.length;i++){
+    if(filelist[i]==="keitaiso.txt"||filelist[i].match(/^\./)||!filelist[i].match(/\.txt$/)) continue
+    allWord += fs.readFileSync(`./data/${filelist[i]}`,"utf8")
+  }
+  fs.writeFileSync("./test.txt",allWord,"utf8")
   let splitWord = [" "];
   allWord = allWord.split("\n");
   allWord = allWord.join(" ");
@@ -14,11 +21,10 @@ function keitaiso(allWord) {
     for (let j = 0; j < tokens.length; j++) {
       splitWord.push(tokens[j].surface_form);
     }
-    splitWord.push(" ");
     console.log(splitWord);
     let date = new Date();
     fs.writeFileSync(`./data/keitaiso-${date.getTime()}.txt`, splitWord);
   });
 };
 
-keitaiso(fs.readFileSync("./data/g1.txt","utf8"));
+keitaiso();

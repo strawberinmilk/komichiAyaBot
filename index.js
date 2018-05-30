@@ -2,15 +2,20 @@ const fs = require("fs");
 
 const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 
-const ayayaSay = () =>{
+const ayayaSay = (serchWord) => {
     let ayaya = [];
-    let serchWord = " ";
+    if (!serchWord) {
+        serchWord = " ";
+    }
+    let noDataFlag = true;
     while (true) {
         let indexofStart = -1;
         let wordNumberList = [];
         while (true) {
             indexofStart += 1;
             indexofStart = keitaiso.indexOf(serchWord, indexofStart);
+            if(indexofStart=== -1 && noDataFlag) return ["nothit","ごめんなさい、わからないわ。"]
+            noDataFlag = false
             if (indexofStart === -1 || indexofStart === keitaiso.length - 1) {
                 indexofStart = null;
                 break;
@@ -30,24 +35,26 @@ const ayayaSay = () =>{
     }
     serchWord = null;
     ayaya = ayaya.join("");
-    return ayaya;
+    return [null,ayaya];
     ayaya = null;
 }
 
-const call = () => {
+const call = (serchWord) => {
     while (true) {
-        let ayaya = ayayaSay();
-        if ( !ayaya.match(/しね$/) && ayaya.length > 25) {
+        let ayaya = ayayaSay(serchWord);
+        if(ayaya[0]) return ayaya[1]
+        ayaya = ayaya[1]
+        if (!ayaya.match(/しね$/) && ayaya.length > 25) {
             return ayaya;
             ayaya = null;
             break;
-        }else{
+        } else {
             ayaya = null;
             continue;
         }
     }
 }
-
+console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
 /*
 let num = 0;
@@ -60,9 +67,29 @@ for(let i=0;i<1000;i++){
 console.log(num/1000);
 */
 
+/*
 setInterval(()=>{
     console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 },10000)
+*/
+
+function checkMemory() {
+
+    // gc.
+    try {
+        global.gc();
+    } catch (e) {
+        console.log('You have to run this program as `node --expose-gc app_memory_leak.js`');
+        process.exit();
+    }
+
+    // Check heap memory.
+    const heapUsed = process.memoryUsage().heapUsed;
+    console.log('heapSize: ', heapUsed);
+}
+
+setInterval(checkMemory, 10000);
+
 
 const twitter = require("twitter");
 //const cron = require('cron').CronJob;

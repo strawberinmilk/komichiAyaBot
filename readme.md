@@ -14,9 +14,9 @@ keitaiso.jsで./dataの中にkeitaiso-(timestamp).txtを生成し、それをind
 
 2 `$ npm install`します  
 
-3 文字列を書き込んだファイル(改行区切りで別の文と認識します)を配置し、keitaiso.jsの一番下の行を書き換え`$ node keitaiso.js`します  
+3 文字列を書き込んだファイル(改行区切りで別の文と認識します)を ./data/original に配置し、`$ node keitaiso.js`します。ファイルの最後は必ず改行にしてください。  
 
-4 3により競合を防ぐためにtimestampをつけたファイルが生成されるので、適切にkeitaiso.txtというファイルにします  
+4 3により競合を防ぐためにtimestampをつけたファイルが ./data に生成されるので、適切にkeitaiso.txtとリネームします  
 
 5 ./.envにtwitterAPIkeyを適切に設定します  
 
