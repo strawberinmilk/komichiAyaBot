@@ -61,11 +61,11 @@ console.log(num/1000);
 */
 
 setInterval(()=>{
-  console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
+    console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 },10000)
 
 const twitter = require("twitter");
-const cron = require('cron').CronJob;
+//const cron = require('cron').CronJob;
 require('dotenv').config();
 const key = new twitter({
     consumer_key: process.env.consumer_key,
@@ -91,16 +91,26 @@ key.stream('user', stream => {
     });
 });
 
+const posttweet = () =>{
+    key.post('statuses/update',
+    { status: call() },
+    (error, tweet, response) => {
+    })
+}
+
+setInterval(()=>{
+    posttweet()
+},600000)
+
+/*
 const cronAyaya = new cron({
     cronTime: '0 0,10,20,30,40,50 * * * *',
 //    cronTime: '* * * * * *',
     onTick:  () => {
-        key.post('statuses/update',
-            { status: call() },
-            function (error, tweet, response) {
-            })
+        posttweet()
     },
     start: false,
     timeZone: 'Asia/Tokyo'
 });
 cronAyaya.start();
+*/
