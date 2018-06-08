@@ -2,7 +2,9 @@ const fs = require("fs");
 
 const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 
-const ayayaSay = (serchWord) => {
+const ayayaSay = (serchWord)=>{
+
+return ((serchWord) => {
     let ayaya = [];
     if (!serchWord) {
         serchWord = " ";
@@ -37,6 +39,7 @@ const ayayaSay = (serchWord) => {
     ayaya = ayaya.join("");
     return [null,ayaya];
     ayaya = null;
+})(serchWord)
 }
 
 const call = (serchWord) => {
@@ -56,16 +59,16 @@ const call = (serchWord) => {
 }
 console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
-/*
+
 let num = 0;
 for(let i=0;i<1000;i++){
-    let tmp = call();
+    let tmp = call("綾");
     num += tmp.length
     console.log(`${tmp}${i}`)
     console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
 console.log(num/1000);
-*/
+
 
 /*
 setInterval(()=>{
@@ -90,7 +93,7 @@ function checkMemory() {
 
 setInterval(checkMemory, 10000);
 
-
+/*
 const twitter = require("twitter");
 //const cron = require('cron').CronJob;
 require('dotenv').config();
@@ -128,7 +131,7 @@ const posttweet = () =>{
 setInterval(()=>{
     posttweet()
 },600000)
-
+*/
 /*
 const cronAyaya = new cron({
     cronTime: '0 0,10,20,30,40,50 * * * *',
