@@ -2,7 +2,8 @@ const fs = require("fs");
 
 const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 
-const ayayaSay = (serchWord)=>{
+let call = (serchWord)=>{
+let ayayaSay = (serchWord)=>{
 
 return ((serchWord) => {
     let ayaya = [];
@@ -42,8 +43,16 @@ return ((serchWord) => {
 })(serchWord)
 }
 
-const call = (serchWord) => {
-    while (true) {
+//let call = (serchWord) => {
+let ans = ayayaSay(serchWord)[1]+""
+console.log(ans)
+delete ayayaSay
+
+return ans
+
+
+/*
+     while (true) {
         let ayaya = ayayaSay(serchWord);
         if(ayaya[0]) return ayaya[1]
         ayaya = ayaya[1]
@@ -56,6 +65,7 @@ const call = (serchWord) => {
             continue;
         }
     }
+*/
 }
 console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
