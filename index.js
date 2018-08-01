@@ -69,7 +69,7 @@ return ans
 }
 console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
-
+/*
 let num = 0;
 for(let i=0;i<1000;i++){
     let tmp = call("綾");
@@ -78,7 +78,7 @@ for(let i=0;i<1000;i++){
     console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
 console.log(num/1000);
-
+*/
 
 /*
 setInterval(()=>{
@@ -93,7 +93,6 @@ function checkMemory() {
         global.gc();
     } catch (e) {
         console.log('You have to run this program as `node --expose-gc app_memory_leak.js`');
-        process.exit();
     }
 
     // Check heap memory.
@@ -103,9 +102,9 @@ function checkMemory() {
 
 setInterval(checkMemory, 10000);
 
-/*
+
 const twitter = require("twitter");
-//const cron = require('cron').CronJob;
+const cron = require('cron').CronJob;
 require('dotenv').config();
 const key = new twitter({
     consumer_key: process.env.consumer_key,
@@ -124,25 +123,25 @@ key.get("account/verify_credentials", function (error, data) {
     console.log("\n")
     mydata = null;
 })
-
+/*
 key.stream('user', stream => {
     stream.on('follow', data => {
         key.post('friendships/create', { user_id: data.source.id_str });
     });
 });
-
+*/
 const posttweet = () =>{
     key.post('statuses/update',
     { status: call() },
     (error, tweet, response) => {
     })
 }
-
+/*
 setInterval(()=>{
     posttweet()
 },600000)
 */
-/*
+
 const cronAyaya = new cron({
     cronTime: '0 0,10,20,30,40,50 * * * *',
 //    cronTime: '* * * * * *',
@@ -153,4 +152,4 @@ const cronAyaya = new cron({
     timeZone: 'Asia/Tokyo'
 });
 cronAyaya.start();
-*/
+posttweet()
