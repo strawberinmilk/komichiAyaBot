@@ -3,9 +3,8 @@ const fs = require("fs");
 const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 
 let call = (serchWord)=>{
-let ayayaSay = (serchWord)=>{
+  let ayayaSay = (serchWord)=>{
 
-  return ((serchWord) => {
     let ayaya = [];
     if (!serchWord) {
       serchWord = " ";
@@ -33,6 +32,7 @@ let ayayaSay = (serchWord)=>{
       } else {
         serchWord = keitaiso[wordNumber];
         ayaya.push(keitaiso[wordNumber]);
+        if(ayaya.length>30)break;
       }
       wordNumber = null
     }
@@ -40,11 +40,10 @@ let ayayaSay = (serchWord)=>{
     ayaya = ayaya.join("");
     return [null,ayaya];
     ayaya = null;
-  })(serchWord)
 }
 
-//let call = (serchWord) => {
 let ans = ayayaSay(serchWord)[1]+""
+ayayaSay = null;
 console.log(ans)
 delete ayayaSay
 
@@ -69,7 +68,7 @@ return ans
 }
 console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
-/*
+
 let num = 0;
 for(let i=0;i<1000;i++){
   let tmp = call("綾");
@@ -78,7 +77,7 @@ for(let i=0;i<1000;i++){
   console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
 console.log(num/1000);
-*/
+
 
 /*
 setInterval(()=>{
@@ -87,7 +86,6 @@ setInterval(()=>{
 */
 
 function checkMemory() {
-
 // gc.
 try {
     global.gc();
@@ -101,7 +99,7 @@ console.log('heapSize: ', heapUsed);
 
 setInterval(checkMemory, 10000);
 
-
+/*
 const twitter = require("twitter");
 const cron = require('cron').CronJob;
 require('dotenv').config();
@@ -142,7 +140,7 @@ const cronAyaya = new cron({
 });
 cronAyaya.start();
 posttweet()
-
+*/
 /*
 setInterval(()=>{
     posttweet()
