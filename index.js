@@ -5,7 +5,7 @@ const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 let call = (serchWord)=>{
   let ayayaSay = (serchWord)=>{
 
-    let ayaya = [];
+    let ayaya = [serchWord];
     if (!serchWord) {
       serchWord = " ";
     }
@@ -16,15 +16,15 @@ let call = (serchWord)=>{
       while (true) {
         indexofStart += 1;
         indexofStart = keitaiso.indexOf(serchWord, indexofStart);
-        if(indexofStart=== -1 && noDataFlag) return ["nothit","ごめんなさい、わからないわ。"]
-        noDataFlag = false
+        if(indexofStart=== -1 && noDataFlag) return ["nothit","ごめんなさい、わからないわ。"];
+        noDataFlag = false;
         if (indexofStart === -1 || indexofStart === keitaiso.length - 1) {
           indexofStart = null;
           break;
         };
         wordNumberList.push(indexofStart + 1);
       };
-      let wordNumber = wordNumberList[Math.floor(Math.random() * wordNumberList.length)];
+      let wordNumber = wordNumberList[Math.floor(Math.random() * (wordNumberList.length) )];
       indexofStart = null;
       wordNumberList = null;
       if (keitaiso[wordNumber] === " ") {
@@ -32,7 +32,8 @@ let call = (serchWord)=>{
       } else {
         serchWord = keitaiso[wordNumber];
         ayaya.push(keitaiso[wordNumber]);
-        if(ayaya.length>30)break;
+        console.log(keitaiso[wordNumber])
+        if(ayaya.length>100)break;
       }
       wordNumber = null
     }
@@ -43,10 +44,6 @@ let call = (serchWord)=>{
 }
 
 let ans = ayayaSay(serchWord)[1]+""
-ayayaSay = null;
-console.log(ans)
-delete ayayaSay
-
 return ans
 
 
@@ -70,13 +67,13 @@ console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
 
 let num = 0;
-for(let i=0;i<1000;i++){
-  let tmp = call("綾");
+for(let i=0;i<3;i++){
+  let tmp = call("陽子");
   num += tmp.length
   console.log(`${tmp}${i}`)
-  console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
+//  console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
-console.log(num/1000);
+//console.log("aaa"+keitaiso[2043]+"aaa")
 
 
 /*
@@ -84,20 +81,6 @@ setInterval(()=>{
   console.log(new Date + process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 },10000)
 */
-
-function checkMemory() {
-// gc.
-try {
-    global.gc();
-} catch (e) {
-    console.log('You have to run this program as `node --expose-gc index.js`');
-}
-// Check heap memory.
-const heapUsed = process.memoryUsage().heapUsed;
-console.log('heapSize: ', heapUsed);
-}
-
-setInterval(checkMemory, 10000);
 
 /*
 const twitter = require("twitter");
@@ -147,10 +130,7 @@ setInterval(()=>{
 },600000)
 */
 
-/*
-key.stream('user', stream => {
-    stream.on('follow', data => {
-        key.post('friendships/create', { user_id: data.source.id_str });
-    });
-});
-*/
+const tweetDeckStream = require("tweetdeckstream");
+tweetDeckStream.write = (data)=>{
+  console.log(data);
+}
