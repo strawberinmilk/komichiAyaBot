@@ -1,4 +1,8 @@
 const fs = require("fs");
+const kuromoji = require('kuromoji');
+const builder = kuromoji.builder({
+  dicPath: 'node_modules/kuromoji/dict/'
+});
 
 const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
 
@@ -32,7 +36,6 @@ let call = (serchWord)=>{
       } else {
         serchWord = keitaiso[wordNumber];
         ayaya.push(keitaiso[wordNumber]);
-        console.log(keitaiso[wordNumber])
         if(ayaya.length>100)break;
       }
       wordNumber = null
@@ -61,11 +64,12 @@ return ans
       continue;
     }
   }
-*/
+  */
+
 }
 console.log(call("綾"))
 //テストコード twitterを殺してから実行すること
-
+/*
 let num = 0;
 for(let i=0;i<3;i++){
   let tmp = call("陽子");
@@ -73,8 +77,7 @@ for(let i=0;i<3;i++){
   console.log(`${tmp}${i}`)
 //  console.log(process.memoryUsage().heapUsed + "/" +process.memoryUsage().heapTotal)
 }
-//console.log("aaa"+keitaiso[2043]+"aaa")
-
+*/
 
 /*
 setInterval(()=>{
@@ -82,7 +85,7 @@ setInterval(()=>{
 },10000)
 */
 
-/*
+
 const twitter = require("twitter");
 const cron = require('cron').CronJob;
 require('dotenv').config();
@@ -104,6 +107,12 @@ key.get("account/verify_credentials", function (error, data) {
   mydata = null;
 })
 
+key.post('statuses/update',
+{ status: `再起動しました\n${new Date}` },
+(error, tweet, response) => {
+})
+
+
 const posttweet = () =>{
   key.post('statuses/update',
   { status: call() },
@@ -123,14 +132,59 @@ const cronAyaya = new cron({
 });
 cronAyaya.start();
 posttweet()
+
+/*
+const cronReply = new cron({
+  cronTime: '0 * * * * *',
+  onTick:  () => {
+    
+    let replyId = fs.readFileSync("./data/nextId.txt","utf8");
+    key.get('statuses/mentions_timeline',
+    { 
+      count: 200,
+      since_id :replyId
+    },
+    (error, tweet, response) => {
+      if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
+      for(let i=0;i<tweet.length;i++){
+        let word = tweet[i].text.replace(/@\w+/g,"")
+        let hitWord
+        hitWord = word.match(/大宮|忍|シノ|しの|アリス|カータレット|小路|綾|あや|アヤ|猪熊|陽子|九条|カレン|しの|シノ|あやや|アヤヤ|勇|久世橋|烏丸/g)
+        if(!hitWord){
+          builder.build(function(err, tokenizer) {
+            let hitWordTemp = [];
+            var tokens = tokenizer.tokenize(word);
+            for(let i=0;i<tokens.length;i++){
+              if(tokens[i].pos==="名詞")hitWordTemp.push(tokens[i].surface_form)
+            }
+            hitWord = hitWordTemp
+          });
+        }
+        let interval = setInterval(()=>{
+          if(hitWord){
+            let ans
+            if(hitWord.length===0){
+              ans = null;
+            }else{
+              ans = hitWord[Math.floor(Math.random()*hitWord.length)]
+            }
+            hitWord = null
+            console.log(call(ans))
+            clearInterval(interval)
+          }
+        },500)
+        
+      }
+    })
+
+  },
+  start: false,
+  timeZone: 'Asia/Tokyo'
+})
+cronReply.start();
 */
 /*
 setInterval(()=>{
     posttweet()
 },600000)
 */
-
-const tweetDeckStream = require("tweetdeckstream");
-tweetDeckStream.write = (data)=>{
-  console.log(data);
-}

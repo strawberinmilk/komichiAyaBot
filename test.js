@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-let word = "うさぎ"
+let word = "リプの内容"
 
 const kuromoji = require('kuromoji');
 const builder = kuromoji.builder({
@@ -8,17 +8,29 @@ const builder = kuromoji.builder({
 });
 
 let hitWord
-hitWord = word.match(/大宮|忍|アリス|カータレット|小路|綾|猪熊|陽子|九条|カレン|しの|シノ|あやや|アヤヤ|勇|久世橋|烏丸/g)
+hitWord = word.match(/大宮|忍|シノ|しの|アリス|カータレット|小路|綾|あや|アヤ|あやや|アヤヤ|猪熊|陽子|九条|カレン|しの|シノ|あやや|アヤヤ|勇|久世橋|烏丸/g)
 if(!hitWord){
-  hitWord = []
-  builder.build(function (err, tokenizer) {
+  builder.build(function(err, tokenizer) {
+    let hitWordTemp = [];
     var tokens = tokenizer.tokenize(word);
-    for (let j = 0; j < tokens.length; j++) {
-      console.log(tokens[j].pos)
-      if(tokens[j].pos === "名詞" || tokens[j].pos === "動詞") hitWord.push(tokens[j].surface_form);
+    for(let i=0;i<tokens.length;i++){
+      if(tokens[i].pos==="名詞")hitWordTemp.push(tokens[i].surface_form)
     }
-   })
+    hitWord = hitWordTemp
+  });
 }
-console.log(hitWord)
-console.log(hitWord[Math.floor(Math.random()*hitWord.length)])
+let interval = setInterval(()=>{
+  if(hitWord){
+    console.log(hitWord)    
+    let ans
+    if(hitWord.length===0){
+      ans = null;
+    }else{
+      ans = hitWord[Math.floor(Math.random()*hitWord.length)]
+    }
+    hitWord = null
+    console.log(ans)
+    clearInterval(interval)
+  }
+},500)
 
