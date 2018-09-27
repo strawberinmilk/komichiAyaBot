@@ -4,7 +4,8 @@ const builder = kuromoji.builder({
   dicPath: 'node_modules/kuromoji/dict/'
 });
 
-const keitaiso = fs.readFileSync("./data/keitaiso.txt", "utf8").split(",");
+const keitaisoTxt = fs.readFileSync("./data/keitaiso.txt", "utf8");
+const keitaiso = keitaisoTxt.split(",");
 
 let call = (serchWord)=>{
   let ayayaSay = (serchWord)=>{
@@ -96,15 +97,15 @@ const key = new twitter({
   access_token_secret: process.env.access_token_secret
 });
 
+let mydata
 key.get("account/verify_credentials", function (error, data) {
-  let mydata = JSON.stringify(data)
+  mydata = JSON.stringify(data)
   mydata = JSON.parse(mydata)
   //console.log(mydata)
   console.log("認証アカウント")
   console.log("@" + mydata.screen_name)
   console.log(mydata.name)
   console.log("\n")
-  mydata = null;
 })
 
 key.post('statuses/update',
@@ -133,11 +134,61 @@ const cronAyaya = new cron({
 cronAyaya.start();
 posttweet()
 
-/*
+
+//リプライ対応機能
+const sendReply = (word,replyId)=>{
+  key.post('statuses/update',
+  { status: `@${replyId.screenName} \n${call(word)}`,
+    in_reply_to_status_id : replyId.id
+  },
+  (error, tweet, response) => {
+  })
+}
+const searchHotWord = (word,replyId)=>{
+  let hitWord
+  let hitWordList = []
+  hitWord = word.match(/大宮|忍|シノ|しの|アリス|カータレット|小路|綾|あや|アヤ|あやや|アヤヤ|猪熊|陽子|九条|カレン/g)
+  if(hitWord){
+    for(let i=0;i<hitWord.length;i++){
+      hitWord[i] = hitWord[i].replace(/小路|綾|あや|アヤ|あやや|アヤヤ/g,"綾")
+      hitWord[i] = hitWord[i].replace(/大宮|忍|シノ|しの/g,"しの")
+      hitWord[i] = hitWord[i].replace(/カータレット/g,"アリス")
+      hitWord[i] = hitWord[i].replace(/猪熊/,"陽子")
+      hitWord[i] = hitWord[i].replace(/九条/,"カレン")
+    }
+    sendReply(hitWord[Math.floor(Math.random() * hitWord.length)],replyId)
+  }else{
+    builder.build(function(err, tokenizer) {
+      var tokens = tokenizer.tokenize(word);
+      for(let i=0;i<tokens.length;i++){
+        if(tokens[i].pos==="名詞"){
+          let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
+          if(tmp)hitWordList.push(tmp[0])
+        }
+      }
+      if(hitWordList.length === 0){
+        for(let i=0;i<tokens.length;i++){
+          if(tokens[i].pos==="形容詞"){
+            let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
+            if(tmp)hitWordList.push(tmp[0])
+          } 
+        }
+      }
+      if(hitWordList.length === 0){
+        for(let i=0;i<tokens.length;i++){
+          if(tokens[i].pos==="動詞"){
+            let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
+            if(tmp)hitWordList.push(tmp[0])
+          } 
+        }
+      }
+      sendReply(hitWordList[Math.floor(Math.random() * hitWordList.length)],replyId)
+    });
+  }
+}
 const cronReply = new cron({
   cronTime: '0 * * * * *',
   onTick:  () => {
-    
     let replyId = fs.readFileSync("./data/nextId.txt","utf8");
     key.get('statuses/mentions_timeline',
     { 
@@ -147,33 +198,8 @@ const cronReply = new cron({
     (error, tweet, response) => {
       if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
       for(let i=0;i<tweet.length;i++){
-        let word = tweet[i].text.replace(/@\w+/g,"")
-        let hitWord
-        hitWord = word.match(/大宮|忍|シノ|しの|アリス|カータレット|小路|綾|あや|アヤ|猪熊|陽子|九条|カレン|しの|シノ|あやや|アヤヤ|勇|久世橋|烏丸/g)
-        if(!hitWord){
-          builder.build(function(err, tokenizer) {
-            let hitWordTemp = [];
-            var tokens = tokenizer.tokenize(word);
-            for(let i=0;i<tokens.length;i++){
-              if(tokens[i].pos==="名詞")hitWordTemp.push(tokens[i].surface_form)
-            }
-            hitWord = hitWordTemp
-          });
-        }
-        let interval = setInterval(()=>{
-          if(hitWord){
-            let ans
-            if(hitWord.length===0){
-              ans = null;
-            }else{
-              ans = hitWord[Math.floor(Math.random()*hitWord.length)]
-            }
-            hitWord = null
-            console.log(call(ans))
-            clearInterval(interval)
-          }
-        },500)
-        
+        if(tweet[i].user.screen_name === mydata.screen_name) continue;
+        searchHotWord(tweet[i].text.replace(/@\w+/g,""),{"id":tweet[i].id_str,"screenName":tweet[i].user.screen_name})
       }
     })
 
@@ -182,9 +208,3 @@ const cronReply = new cron({
   timeZone: 'Asia/Tokyo'
 })
 cronReply.start();
-*/
-/*
-setInterval(()=>{
-    posttweet()
-},600000)
-*/
