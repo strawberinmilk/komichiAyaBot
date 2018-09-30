@@ -1,0 +1,15 @@
+/home/rinkei/program/komichiAyaBot/index.js:199
+      if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
+               ^
+
+TypeError: Cannot read property 'length' of undefined
+    at key.get (/home/rinkei/program/komichiAyaBot/index.js:199:16)
+    at Request._callback (/home/rinkei/program/komichiAyaBot/node_modules/twitter/lib/twitter.js:190:14)
+    at self.callback (/home/rinkei/program/komichiAyaBot/node_modules/request/request.js:186:22)
+    at Request.emit (events.js:180:13)
+    at Request.onRequestError (/home/rinkei/program/komichiAyaBot/node_modules/request/request.js:878:8)
+    at ClientRequest.emit (events.js:180:13)
+    at TLSSocket.socketErrorListener (_http_client.js:395:9)
+    at TLSSocket.emit (events.js:180:13)
+    at emitErrorNT (internal/streams/destroy.js:64:8)
+    at process._tickCallback (internal/process/next_tick.js:178:19)
