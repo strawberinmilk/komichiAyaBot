@@ -199,12 +199,7 @@ const cronReply = new cron({
       since_id :replyId
     },
     (error, tweet, response) => {
-      try{
-        console.log(tweet.length)
-      }catch(e){
-        console.log(`debugError\n${e}`)
-        fs.writeFileSync("./debug.json",JSON.stringify(tweet),"utf8")
-      }//debug
+      fs.writeFileSync("./debug.json",JSON.stringify(tweet),"utf8")
       if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
       for(let i=0;i<tweet.length;i++){
         if(tweet[i].user.screen_name === mydata.screen_name) continue;
