@@ -162,7 +162,6 @@ const searchHotWord = (word,replyId)=>{
       let tokens = tokenizer.tokenize(word);
       for(let i=0;i<tokens.length;i++){
         if(tokens[i].pos==="名詞"){
-          console.log(tokens[i].surface_form)//debug
           let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
           if(tmp)hitWordList.push(tmp[0])
         }
@@ -170,7 +169,6 @@ const searchHotWord = (word,replyId)=>{
       if(hitWordList.length === 0){
         for(let i=0;i<tokens.length;i++){
           if(tokens[i].pos==="形容詞"){
-            console.log(tokens[i].surface_form)//debug
             let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
             if(tmp)hitWordList.push(tmp[0])
           } 
@@ -179,7 +177,6 @@ const searchHotWord = (word,replyId)=>{
       if(hitWordList.length === 0){
         for(let i=0;i<tokens.length;i++){
           if(tokens[i].pos==="動詞"){
-            console.log(tokens[i].surface_form)//debug
             let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"))
             if(tmp)hitWordList.push(tmp[0])
           } 
@@ -190,7 +187,7 @@ const searchHotWord = (word,replyId)=>{
   }
 }
 const cronReply = new cron({
-  cronTime: '* * * * * *',
+  cronTime: '0 * * * * *',
   onTick:  () => {
     let replyId = fs.readFileSync("./data/nextId.txt","utf8");
     key.get('statuses/mentions_timeline',
@@ -199,11 +196,11 @@ const cronReply = new cron({
       since_id :replyId
     },
     (error, tweet, response) => {
-      fs.writeFileSync("./debug.json",JSON.stringify(tweet),"utf8")
+      if(tweet.errors)return
       if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
       for(let i=0;i<tweet.length;i++){
         if(tweet[i].user.screen_name === mydata.screen_name) continue;
-        searchHotWord(tweet[i].text.replace(/@\w+/g,""),{"id":tweet[i].id_str,"screenName":tweet[i].user.screen_name})
+        searchHotWord(tweet[i].text.replace(/@\w+|[!-@]|[\[-\`]|[\{-\~]/gi,""),{"id":tweet[i].id_str,"screenName":tweet[i].user.screen_name})
       }
     })
 
