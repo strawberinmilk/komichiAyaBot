@@ -1,4 +1,5 @@
-data/
+data/keitaiso.txt
+nextId.txt
 node_modules/
 .DS_Store
 .env
