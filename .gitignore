@@ -1,5 +1,6 @@
 data/keitaiso.txt
-nextId.txt
+data/nextId.txt
+data/gensaku/*
 node_modules/
 .DS_Store
 .env
