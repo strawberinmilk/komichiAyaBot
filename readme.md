@@ -40,3 +40,5 @@ keitaiso.jsで./dataの中にkeitaiso-(timestamp).txtを生成し、それをind
 2018.10.03  v1.0.5  リファクタリング
 
 2018.10.04  v1.0.6  talk機能とtwitter機能の分離
+
+2018.10.11  v1.0.7  reply機能とtwitter機能の分離
