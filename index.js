@@ -57,6 +57,7 @@ for(let i=0;i<10000;i++){
 */
 
 const searchHotWord = (word)=>{
+  word = word.replace(/[!-@]|[\[-\`]|[\{-\~]/gi,"")
   let hitWord;
   let hitWordList = [];
   if (!word) {

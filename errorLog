@@ -1,0 +1,20 @@
+rinkei@rinkei-ubuntu-lga775:~/program/komichiAyaBot$ node slack.js
+Initializing Botkit v0.6.16
+info: ** No persistent storage method specified! Data may be lost when process shuts down.
+notice: ** BOT ID: komichi_aya_bot ...attempting to connect to RTM!
+notice: RTM websocket opened
+/home/rinkei/program/komichiAyaBot/index.js:83
+            let tmp = keitaisoTxt.match(new RegExp(tokens[i].surface_form,"g"));
+                                        ^
+
+SyntaxError: Invalid regular expression: /(/: Unterminated group
+    at new RegExp (<anonymous>)
+    at /home/rinkei/program/komichiAyaBot/index.js:83:41
+    at /home/rinkei/program/komichiAyaBot/node_modules/kuromoji/src/TokenizerBuilder.js:44:9
+    at /home/rinkei/program/komichiAyaBot/node_modules/kuromoji/src/loader/DictionaryLoader.js:126:9
+    at /home/rinkei/program/komichiAyaBot/node_modules/async/dist/async.js:3888:9
+    at /home/rinkei/program/komichiAyaBot/node_modules/async/dist/async.js:473:16
+    at iteratorCallback (/home/rinkei/program/komichiAyaBot/node_modules/async/dist/async.js:1064:13)
+    at /home/rinkei/program/komichiAyaBot/node_modules/async/dist/async.js:969:16
+    at /home/rinkei/program/komichiAyaBot/node_modules/async/dist/async.js:3885:13
+    at /home/rinkei/program/komichiAyaBot/node_modules/kuromoji/src/loader/DictionaryLoader.js:86:17
