@@ -11,7 +11,7 @@ const start = ()=>{
     start()
   });
 }
-
+start()
 /*
 BOT.say({
   channel: 'ねこbotハウス',
