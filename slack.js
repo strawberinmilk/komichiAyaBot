@@ -7,8 +7,10 @@ const start = ()=>{
   const BOT = controller.spawn({
     token: process.env.slack_token
   }).startRTM((err)=>{
-    if(err) console.log(err)//throw new Error(err);
-    start()
+    if(err) {
+      console.log(err)//throw new Error(err);
+      start()
+    }
   });
 }
 start()
