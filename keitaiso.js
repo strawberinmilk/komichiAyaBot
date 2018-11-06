@@ -6,12 +6,11 @@ const fs = require("fs");
 
 function keitaiso() {
   let allWord = ""
-  let filelist = fs.readdirSync("./data/original")
+  let filelist = fs.readdirSync("./data/gensaku")
   for(let i=0;i<filelist.length;i++){
     if(filelist[i]==="keitaiso.txt"||filelist[i].match(/^\./)||!filelist[i].match(/\.txt$/)) continue
-    allWord += fs.readFileSync(`./data/${filelist[i]}`,"utf8")
+    allWord += fs.readFileSync(`./data/gensaku/${filelist[i]}`,"utf8")
   }
-  fs.writeFileSync("./test.txt",allWord,"utf8")
   let splitWord = [" "];
   allWord = allWord.split("\n");
   allWord = allWord.join(" ");
