@@ -9,6 +9,11 @@ const twitter = new twitterModule({
   access_token_key: process.env.access_token_key,
   access_token_secret: process.env.access_token_secret
 });
+let Datastore = require('nedb');
+let db = new Datastore({ 
+    filename: 'speakLog.db',
+    autoload: true
+});
 
 let mydata;
 twitter.get("account/verify_credentials", function (error, data) {
@@ -48,6 +53,13 @@ posttweet();
 
 //リプライ対応機能
 const sendReply = (word,replyId)=>{
+  let doc = {
+    user: replyId.screenName,
+    getText: replyId.getText,
+    replyText: word
+  };
+  db.insert(doc);
+
   twitter.post('statuses/update',
   { status: `@${replyId.screenName} \n${word}`,
     in_reply_to_status_id : replyId.id
@@ -71,7 +83,7 @@ const cronReply = new cron({
       for(let i=0;i<tweet.length;i++){
         if(tweet[i].user.screen_name === mydata.screen_name) continue;
         let tmp = await speak.reply(tweet[i].text.replace(/@\w+|[!-@]|[\[-\`]|[\{-\~]/gi,""));
-        sendReply(tmp,{"id":tweet[i].id_str,"screenName":tweet[i].user.screen_name})
+        sendReply(tmp,{"id":tweet[i].id_str,"screenName":tweet[i].user.screen_name,"getText":tweet[i].text.replace(/@\w+|[!-@]|[\[-\`]|[\{-\~]/gi,"")})
       }
     })
 

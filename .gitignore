@@ -9,3 +9,4 @@ node_modules/
 ._.env
 ._index.js
 jsonSample.json
+speakLog.db
