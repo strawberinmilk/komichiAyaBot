@@ -6,6 +6,7 @@ const builder = kuromoji.builder({
 　
 const keitaisoTxt = fs.readFileSync("./data/keitaiso.txt", "utf8");
 const keitaiso = keitaisoTxt.split(",");
+const personality = require('./data/personality.js')
 
 const talk = (serchWord)=>{
 
@@ -58,11 +59,12 @@ for(let i=0;i<10000;i++){
 
 const searchHotWord = (word)=>{
   word = word.replace(/[!-@]|[\[-\`]|[\{-\~]/gi,"")
-  let hitWord;
-  let hitWordList = [];
+  let hitWord
+  let hitWordList = []
   if (!word) {
-    word = " ";
+    word = " "
   }
+  /*
   hitWord = word.match(/大宮|忍|シノ|しの|アリス|カータレット|小路|綾|あや|アヤ|あやや|アヤヤ|猪熊|陽子|九条|カレン/g);
   if(hitWord){
     for(let i=0;i<hitWord.length;i++){
@@ -72,6 +74,16 @@ const searchHotWord = (word)=>{
       hitWord[i] = hitWord[i].replace(/猪熊/,"陽子");
       hitWord[i] = hitWord[i].replace(/九条/,"カレン");
     }
+    */
+    hitWord = word.match(personality.matchAll);
+    console.log(hitWord)
+    if(hitWord){
+      for(let i=0;i<hitWord.length;i++){
+        for(let j=0;j<personality.matchList.length;j++){
+          hitWord[i] = hitWord[i].replace(personality.matchList[j].reg,personality.matchList[j].text);
+        }
+      }
+
     return new Promise((resolve, reject) => {
       resolve(hitWord[Math.floor(Math.random() * hitWord.length)])
     })
