@@ -1,5 +1,6 @@
 data/*
 !data/.keep
+!data/personality_sample.js
 
 node_modules/
 

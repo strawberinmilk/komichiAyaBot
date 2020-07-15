@@ -21,6 +21,11 @@ let db = new Datastore({
     filename: 'speakLog.db',
     autoload: true
 })
+try{
+  fs.readFileSync("./data/nextId.txt","utf8")
+}catch(e){
+  fs.writeFileSync("./data/nextId.txt",'1',"utf8")
+}
 
 let mydata
 twitter.get("account/verify_credentials", function (error, data) {
@@ -85,6 +90,7 @@ const cronReply = new cron({
       since_id :replyId
     },
     async (error, tweet, response) => {
+      //console.log(tweet)
       if(tweet.errors)return
       if(tweet.length!=0)fs.writeFileSync("./data/nextId.txt",tweet[0].id_str,"utf8")
       for(let i=0;i<tweet.length;i++){
